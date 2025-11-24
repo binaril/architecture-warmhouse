@@ -15,7 +15,7 @@ Container_Boundary(SmartHouse, "Система Умный дом") {
 
 Container(Telemetry, "Модуль телеметрии", "Go") {
   Component(ApiHandler, "API", "Обработка запросов")
-  Component(UserController, "UserController", "Manages user profiles")
+  Component(PollingCircle, "UserController", "Manages user profiles")
   Component(ScheduleController, "ScheduleController", "Manages schedules")
   Component(PaymentController, "PaymentController", "Handles payment processing")
   Component(Aggragator, "Service Layer", "Бизнес логика")
