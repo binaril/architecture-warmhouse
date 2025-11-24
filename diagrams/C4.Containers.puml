@@ -10,38 +10,43 @@ Person(admin, "Администратор", "Администратор сист
 System(SmartHouse, "система Умный дом", "Система управления отоплением домов и умными устройствами")
 
 Container_Boundary(SmartHouse, "FitLife System") {
-  Container(WebApp, "Web приложение", "javascript", "Обработка действий пользователей")
+  Container(WebApp, "Web приложение", "react", "Панель управления устройствами")
+  Container(WebAppAdmin, "Web приложение", "react", "Панель администратора")
+  Container(GateWay, "API шлюз", "Go", "Маршрутизация запросов")
   Container(UserAccess, "Доступ пользователей", "Go", "Управление данных пользователей")
   ContainerDb(UserAccessDb, "Database Пользователи", "PostgreSQL", "Хранение данных пользователей")
-
-  Container(Automatic, "Реализация автоматических сценариев", "Go", "Управление устройствами по сценариям и графикам")
+  Container(DeviceRepository, "Реестр устройств", "Go", "Управление устройствами, их расположении и доступности для пользователя")
+  ContainerDb(DeviceRepositoryDb, "Database устройства", "PostgreSQL", "Хранение информации об устройствах, их расположении")
+  Container(Automatic, "Модуль автоматизации", "Go", "Управление устройствами по сценариям и графикам")
   ContainerDb(AutomaticDb, "База данных автоматизации", "PostgreSQL", "Хранение сценариев и графиков управления устройствами")
-  
-  Container(DeviceControl, "Управление устройствами", "Go", "Взаисодействие с умными устройствами и регуляторами")
-  Container(Telemetry, "Обработка телеметрии", "Go", "Управление регуляторами отопления и умными устройствами")
+  Container(DeviceControl, "Управление устройствами", "Go", "Взаимодействие с устройствами")
+  Container(Telemetry, "Модуль телеметрии", "Go", "Получение телеметрии датчиков и устройств")
   ContainerDb(DeviceDatabase, "Devices database", "PostgreSQL", "Хранение данных об устройствах, текущее состояние")
   ContainerDb(TelemetryDatabase, "База данных телеметрии", "PostgreSQL", "Временные ряды состояний датчиков и устройств")
 }
 
 System_Ext(PaidService, "Сервис оплаты", "")
-System_Ext(SmartDevice, "Устройства", "Умные устройства, датчики и регуляторы отопления")
+System_Ext(SmartDevice, "Устройства", "Умные устройства, датчики и регуляторы отопления (экосистема партнеров)")
 
 
 Rel(user, WebApp, "Управляет устройствами своего дома")
-Rel(admin, WebApp,"Управляет пользователями и доступом к датчикам")
+Rel(admin, WebAppAdmin,"Управляет пользователями и доступом к датчикам")
 
+Rel(WebApp, GateWay, "Обработка запросов")
+Rel(WebAppAdmin, GateWay, "Обработка запросов")
 
-Rel(WebApp, UserAccess, "Авторизация, управление")
+Rel(GateWay, UserAccess, "Авторизация, управление")
 Rel(UserAccess, UserAccessDb, "Запись/чтение данных")
-Rel(WebApp, DeviceControl, "Управление и получение данных")
-Rel(WebApp, Telemetry, "Получение отчетов телеметрии")
-Rel(WebApp, Automatic, "Получение отчетов телеметрии")
+Rel(GateWay, Telemetry, "Получение отчетов и данных в реальном времени")
+Rel(GateWay, Automatic, "Управление автоматизацией")
 Rel(Automatic, AutomaticDb, "Запись/чтение данных")
+Rel(GateWay, DeviceRepository, "Получение доступных устройств, регистрация новых")
+Rel(DeviceRepository, DeviceRepositoryDb, "Запись/чтение данных")
+Rel(DeviceRepository, DeviceControl, "Регистрация устройств")
 Rel(Automatic, DeviceControl, "Управление и получение данных")
 Rel(DeviceControl,DeviceDatabase,"Получение информации об устройствах")
-Rel(DeviceControl,Telemetry,"Сохранение телеметрии")
-Rel(Telemetry,TelemetryDatabase,"Сохранение телеметрии")
-Rel(DeviceControl,SmartDevice,"Команды управления")
-Rel(SmartDevice,DeviceControl,"Получение данных")
+Rel(Telemetry,TelemetryDatabase,"Запись/чтение данных")
+Rel(Telemetry, DeviceControl, "Показания датчиков, телеметрия")
+Rel(DeviceControl,SmartDevice,"Взаимодействие с экосистемой")
 Rel(UserAccess, PaidService, "Оплата подписки")
 @enduml
