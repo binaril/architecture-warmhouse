@@ -1,0 +1,31 @@
+@startuml
+title Теплый дом. Модуль телеметрии. Диаграмма компонентов
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+
+Container_Boundary(SmartHouse, "Система Умный дом") {
+  Container(GateWay, "API шлюз", "Go", "Маршрутизация запросов")
+  Container(DeviceControl, "Взаимодействие устройствами", "Go", "Взаимодействие с устройствами")
+  Container(Telemetry, "Модуль телеметрии", "Go", "Обработка и хранение телеметрии датчиков и устройств")
+  ContainerDb(TelemetryDatabase, "База данных телеметрии", "PostgreSQL", "Временные ряды состояний датчиков и устройств")
+}
+
+Container(Telemetry, "Модуль телеметрии", "Go") {
+  Component(ApiHandler, "API", "Обработка запросов")
+  Component(UserController, "UserController", "Manages user profiles")
+  Component(ScheduleController, "ScheduleController", "Manages schedules")
+  Component(PaymentController, "PaymentController", "Handles payment processing")
+  Component(Aggragator, "Service Layer", "Бизнес логика")
+  Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
+}
+
+Rel(GateWay,ApiHandler,"REST API")
+Rel(UserController,Aggragator,"Calls business logic")
+Rel(ScheduleController,Aggragator,"Calls business logic")
+Rel(PaymentController,Aggragator,"Calls business logic")
+Rel(Aggragator,RepositoryLayer,"Reads/Writes data")
+Rel(RepositoryLayer,TelemetryDatabase,"Reads/Writes user data")
+@enduml
