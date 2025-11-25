@@ -1,0 +1,26 @@
+@startuml
+title Теплый дом. Web приложение. Диаграмма компонентов
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "Пользователь", "Пользователь системы умный дом")
+
+Container_Boundary(SmartHouse, "Система Умный дом") {
+  Container(WebApp, "Web приложение", "react", "Панель управления устройствами")
+  Container(GateWay, "API шлюз", "Go", "Маршрутизация запросов")
+}
+
+Container(WebApp, "Web приложение", "Go") {
+  Component(ApiHandler, "API", "Обработка запросов")
+  Component(PollingCircle, "UserController", "Manages user profiles")
+  Component(ScheduleController, "ScheduleController", "Manages schedules")
+  Component(PaymentController, "PaymentController", "Handles payment processing")
+  Component(Aggragator, "Service Layer", "Бизнес логика")
+  Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
+}
+
+Rel(user, WebApp, "Управляет устройствами своего дома")
+Rel(WebApp, GateWay, "Обработка запросов")
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+title Теплый дом. Взаимодействие устройствами. Диаграмма компонентов
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+
+Container_Boundary(SmartHouse, "Система Умный дом") {
+  Container(Telemetry, "Модуль телеметрии", "Go", "Обработка и хранение телеметрии датчиков и устройств")
+  Container(DeviceRepository, "Реестр устройств", "Go", "Управление устройствами, их расположении и доступности для пользователя")
+  Container(Automatic, "Модуль управления и автоматизацией", "Go", "Управление устройствами по сценариям и графикам")
+  Container(DeviceControl, "Взаимодействие устройствами", "Go", "Взаимодействие с устройствами")    
+}
+
+System_Ext(SmartDevice, "Устройства", "Умные устройства, датчики и регуляторы отопления (экосистема партнеров)")
+
+Container(DeviceControl, "Взаимодействие устройствами", "Go") {
+  Component(ApiHandler, "API", "Обработка запросов")
+  Component(PollingCircle, "UserController", "Manages user profiles")
+  Component(ScheduleController, "ScheduleController", "Manages schedules")
+  Component(PaymentController, "PaymentController", "Handles payment processing")
+  Component(Aggragator, "Service Layer", "Бизнес логика")
+  Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
+}
+
+Rel(Automatic, DeviceControl, "Управление и получение данных")
+Rel(DeviceControl, DeviceRepository, "Получение списка устройств")
+Rel(DeviceControl, Telemetry, "Передача показания датчиков и телеметрии")
+Rel(DeviceControl,SmartDevice,"Взаимодействие с экосистемой")
+@enduml

@@ -11,6 +11,7 @@ Container_Boundary(SmartHouse, "Система Умный дом") {
   Container(DeviceControl, "Взаимодействие устройствами", "Go", "Взаимодействие с устройствами")
   Container(Telemetry, "Модуль телеметрии", "Go", "Обработка и хранение телеметрии датчиков и устройств")
   ContainerDb(TelemetryDatabase, "База данных телеметрии", "PostgreSQL", "Временные ряды состояний датчиков и устройств")
+  Container(Notification, "Модуль оповещений", "Go", "Формирование сообщений по определенным событиям")
 }
 
 Container(Telemetry, "Модуль телеметрии", "Go") {
@@ -22,10 +23,8 @@ Container(Telemetry, "Модуль телеметрии", "Go") {
   Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
 }
 
-Rel(GateWay,ApiHandler,"REST API")
-Rel(UserController,Aggragator,"Calls business logic")
-Rel(ScheduleController,Aggragator,"Calls business logic")
-Rel(PaymentController,Aggragator,"Calls business logic")
-Rel(Aggragator,RepositoryLayer,"Reads/Writes data")
-Rel(RepositoryLayer,TelemetryDatabase,"Reads/Writes user data")
+Rel(GateWay, Telemetry, "Получение отчетов и данных в реальном времени")
+Rel(Telemetry,TelemetryDatabase,"Запись/чтение данных")
+Rel(Notification, Telemetry, "Определение формирования событий")
+Rel(DeviceControl, Telemetry, "Передача показания датчиков и телеметрии")
 @enduml

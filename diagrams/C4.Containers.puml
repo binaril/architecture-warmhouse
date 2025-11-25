@@ -11,7 +11,7 @@ System(SmartHouse, "система Умный дом", "Система упра�
 
 Container_Boundary(SmartHouse, "FitLife System") {
   Container(WebApp, "Web приложение", "react", "Панель управления устройствами")
-  Container(WebAppAdmin, "Web приложение", "react", "Панель администратора")
+  Container(WebAppAdmin, "Web приложение администратора", "react", "Панель администратора")
   Container(GateWay, "API шлюз", "Go", "Маршрутизация запросов")
   Container(UserAccess, "Управление пользователями", "Go", "Управление данных пользователей")
   ContainerDb(UserAccessDb, "Database Пользователи", "PostgreSQL", "Хранение данных пользователей")
