@@ -17,17 +17,22 @@ Container_Boundary(SmartHouse, "Система Умный дом") {
 System_Ext(Messengers, "Мессендеры", "Доставка событий")
 
 Container(Notification, "Модуль оповещений", "Go") {
-  Component(ApiHandler, "API", "Обработка запросов")
-  Component(PollingCircle, "UserController", "Manages user profiles")
-  Component(ScheduleController, "ScheduleController", "Manages schedules")
-  Component(PaymentController, "PaymentController", "Handles payment processing")
-  Component(Aggragator, "Service Layer", "Бизнес логика")
+  Component(ManageController, "API Управление оповещениями", "CRUD операции")
+  Component(ServiceLayer, "Слой бизнес логики", "Обработка запросов")
+  Component(Observer, "Наблюдатель", "Контроллирует заданные уведомления")
+  Component(MessageGenerator, "Генератор сообщений", "формирует оповещения")
+  Component(MessageSender, "Отправитель сообщений", "Отправляет оповещения")
   Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
 }
 
-Rel(GateWay, Notification, "Управление оповещениями")
-Rel(Notification, Telemetry, "Определение формирования событий")
-Rel(Notification, Messengers, "Доставка событий")
-Rel(Notification, UserAccess, "Получение контактов для отправления событий")
-Rel(Notification, NotificationDb, "Получение контактов для отправления событий")
+Rel(GateWay, ManageController, "Управление оповещениями")
+Rel(Observer, Telemetry, "Определение формирования событий")
+Rel(MessageSender, Messengers, "Доставка событий")
+Rel(MessageSender, UserAccess, "Получение контактов для отправления событий")
+Rel(ManageController, ServiceLayer, "Получение списка устройств")
+Rel(ServiceLayer, RepositoryLayer, "Получение списка устройств")
+Rel(RepositoryLayer, NotificationDb, "Получение контактов для отправления событий")
+Rel(Observer, ServiceLayer, "Получение списка оповещений")
+Rel(Observer, MessageGenerator, "Отправляет команду для формирования оповещений")
+Rel(MessageGenerator, MessageSender, "Отправляет команду для формирования оповещений")
 @enduml

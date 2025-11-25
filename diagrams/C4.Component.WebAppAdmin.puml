@@ -13,14 +13,13 @@ Container_Boundary(SmartHouse, "Система Умный дом") {
 }
 
 Container(WebAppAdmin, "Web приложение", "Go") {
-  Component(ApiHandler, "API", "Обработка запросов")
-  Component(PollingCircle, "UserController", "Manages user profiles")
-  Component(ScheduleController, "ScheduleController", "Manages schedules")
-  Component(PaymentController, "PaymentController", "Handles payment processing")
-  Component(Aggragator, "Service Layer", "Бизнес логика")
-  Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
+  Component(LoginModule, "Модуль аутентификации", "Страница входа в систему")
+  Component(UserManage, "Модуль управление пользователями", "Позволяет управлять пользователями и их доступом")
 }
 
-Rel(admin, WebAppAdmin,"Управляет пользователями и доступом к датчикам")
-Rel(WebAppAdmin, GateWay, "Обработка запросов")
+Rel(admin, LoginModule,"Управляет пользователями и доступом к датчикам")
+Rel(admin, UserManage,"Управляет пользователями и доступом к датчикам")
+Rel(LoginModule, GateWay, "Обработка запросов")
+Rel(UserManage, GateWay, "Обработка запросов")
+
 @enduml

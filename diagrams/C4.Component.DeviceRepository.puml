@@ -15,16 +15,15 @@ Container_Boundary(SmartHouse, "Система Умный дом") {
 }
 
 Container(DeviceRepository, "Реестр устройств", "Go") {
-  Component(ApiHandler, "API", "Обработка запросов")
-  Component(PollingCircle, "UserController", "Manages user profiles")
-  Component(ScheduleController, "ScheduleController", "Manages schedules")
-  Component(PaymentController, "PaymentController", "Handles payment processing")
-  Component(Aggragator, "Service Layer", "Бизнес логика")
+  Component(DeviceController, "API", "Обработка запросов")
+  Component(ServiceLayer, "Слой бизнес логики", "Обработка запросов")
   Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
 }
 
-Rel(GateWay, DeviceRepository, "Получение доступных устройств, регистрация новых")
-Rel(Automatic, DeviceRepository, "Получение списка устройств управления")
-Rel(DeviceControl, DeviceRepository, "Получение списка устройств")
-Rel(DeviceRepository, DeviceRepositoryDb, "Запись/чтение данных")
+Rel(GateWay, DeviceController, "Получение доступных устройств, регистрация новых")
+Rel(Automatic, DeviceController, "Получение списка устройств управления")
+Rel(DeviceControl, DeviceController, "Получение списка устройств")
+Rel(DeviceController, ServiceLayer, "Получение списка устройств")
+Rel(ServiceLayer, RepositoryLayer, "Получение списка устройств")
+Rel(RepositoryLayer, DeviceRepositoryDb, "Запись/чтение данных")
 @enduml

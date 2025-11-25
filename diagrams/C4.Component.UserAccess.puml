@@ -13,19 +13,15 @@ Container_Boundary(SmartHouse, "Система Умный дом") {
   Container(Notification, "Модуль оповещений", "Go", "Формирование сообщений по определенным событиям")
 }
 
-System_Ext(PaidService, "Сервис оплаты", "")
-
 Container(UserAccess, "Управление пользователями", "Go") {
-  Component(ApiHandler, "API", "Обработка запросов")
-  Component(PollingCircle, "UserController", "Manages user profiles")
-  Component(ScheduleController, "ScheduleController", "Manages schedules")
-  Component(PaymentController, "PaymentController", "Handles payment processing")
-  Component(Aggragator, "Service Layer", "Бизнес логика")
+  Component(AccessController, "API", "Обработка запросов")
+  Component(ServiceLayer, "Слой бизнес логики", "Обработка запросов")
   Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
 }
 
-Rel(GateWay, UserAccess, "Авторизация, управление")
-Rel(UserAccess, UserAccessDb, "Запись/чтение данных")
-Rel(UserAccess, PaidService, "Оплата подписки")
-Rel(Notification, UserAccess, "Получение контактов для отправления событий")
+Rel(GateWay, AccessController, "Авторизация, управление")
+Rel(AccessController, ServiceLayer, "Получение списка устройств")
+Rel(ServiceLayer, RepositoryLayer, "Получение списка устройств")
+Rel(RepositoryLayer, UserAccessDb, "Запись/чтение данных")
+Rel(Notification, AccessController, "Получение контактов для отправления событий")
 @enduml

@@ -15,16 +15,23 @@ Container_Boundary(SmartHouse, "Система Умный дом") {
 }
 
 Container(Telemetry, "Модуль телеметрии", "Go") {
-  Component(ApiHandler, "API", "Обработка запросов")
-  Component(PollingCircle, "UserController", "Manages user profiles")
-  Component(ScheduleController, "ScheduleController", "Manages schedules")
-  Component(PaymentController, "PaymentController", "Handles payment processing")
-  Component(Aggragator, "Service Layer", "Бизнес логика")
+  Component(WriteController, "Controller Сохранение данных", "Принимает данные с устройств для последующей обработки")
+  Component(Validator, "Валидатор", "Проверка значений на корректность")
+  Component(Aggregator, "Агрегатор", "Усреднение значений по временным интервалам")
+  Component(ReadController, "Controller Предоставление данных", "Предоставляет текущие значения и данные за временные интервалы")
+  Component(ReportGenerator, "Генератор отчетов", "Подготавливает данные")
   Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
 }
 
-Rel(GateWay, Telemetry, "Получение отчетов и данных в реальном времени")
-Rel(Telemetry,TelemetryDatabase,"Запись/чтение данных")
-Rel(Notification, Telemetry, "Определение формирования событий")
-Rel(DeviceControl, Telemetry, "Передача показания датчиков и телеметрии")
+Rel(GateWay, ReadController, "Получение отчетов и данных в реальном времени")
+Rel(RepositoryLayer,TelemetryDatabase,"Запись/чтение данных")
+Rel(Notification, ReadController, "Получение значений для формирования событий")
+Rel(DeviceControl, WriteController, "Передача показания датчиков и телеметрии")
+Rel(WriteController, Validator, "Передача данных")
+Rel(Validator, Aggregator, "Обработка временных интервалов")
+Rel(Validator, RepositoryLayer, "Сохранение текущих значений")
+Rel(Aggregator, RepositoryLayer, "Сохранение значений усредненных по времени")
+Rel(ReadController, ReportGenerator, "Сохранение значений усредненных по времени")
+Rel(ReportGenerator, RepositoryLayer, "Сохранение значений усредненных по времени")
+
 @enduml

@@ -13,14 +13,21 @@ Container_Boundary(SmartHouse, "Система Умный дом") {
 }
 
 Container(WebApp, "Web приложение", "Go") {
-  Component(ApiHandler, "API", "Обработка запросов")
-  Component(PollingCircle, "UserController", "Manages user profiles")
-  Component(ScheduleController, "ScheduleController", "Manages schedules")
-  Component(PaymentController, "PaymentController", "Handles payment processing")
-  Component(Aggragator, "Service Layer", "Бизнес логика")
-  Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
+  Component(LoginModule, "Модуль аутентификации", "Страница входа в систему")
+  Component(TelemetryReport, "Модуль телеметрии", "Визуализация текущих значений, графиков, отчетов")
+  Component(DeviceRegistryManage, "Модуль реестр устройств", "Доступ к просмотру зарегистрированных устройств, регистрация новых")
+  Component(NotifyManage, "Модуль управление оповещениями", "Доступ к просмотру зарегистрированных оповещений, добавление и редактирование новых")
+  Component(AutomaticManage, "Модуль управление расписанием и автоматизацией", "Доступ к управлению расписанием и логикой работы устройств")
 }
 
-Rel(user, WebApp, "Управляет устройствами своего дома")
-Rel(WebApp, GateWay, "Обработка запросов")
+Rel(user, LoginModule,"Управляет пользователями и доступом к датчикам")
+Rel(user, TelemetryReport,"Управляет пользователями и доступом к датчикам")
+Rel(user, DeviceRegistryManage,"Управляет пользователями и доступом к датчикам")
+Rel(user, NotifyManage,"Управляет пользователями и доступом к датчикам")
+Rel(user, AutomaticManage,"Управляет пользователями и доступом к датчикам")
+Rel(LoginModule, GateWay, "Обработка запросов")
+Rel(TelemetryReport, GateWay, "Обработка запросов")
+Rel(DeviceRegistryManage, GateWay, "Обработка запросов")
+Rel(NotifyManage, GateWay, "Обработка запросов")
+Rel(AutomaticManage, GateWay, "Обработка запросов")
 @enduml
