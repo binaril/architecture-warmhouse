@@ -14,16 +14,23 @@ Container_Boundary(SmartHouse, "Система Умный дом") {
 }
 
 Container(Automatic, "Модуль управления и автоматизацией", "Go") {
-  Component(ApiHandler, "API", "Обработка запросов")
-  Component(PollingCircle, "UserController", "Manages user profiles")
-  Component(ScheduleController, "ScheduleController", "Manages schedules")
-  Component(PaymentController, "PaymentController", "Handles payment processing")
-  Component(Aggragator, "Service Layer", "Бизнес логика")
+  Component(ManageController, "API управление расписанием", "Обработка запросов редактирования графиков и схем автоматизации")
+  Component(DeviceController, "API управление устройствами", "Обработка запросов управления устройствами")
+  Component(ServiceLayer, "Слой бизнес логики", "Обработка запросов")
+  Component(Scheduler, "Планировщик", "Выполняет команды по расписанию")
+  Component(Producer, "Producer команд", "Manages schedules")
+  Component(CommandBuilder, "Обработчик команд", "Формирует команды для устройств")
   Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
 }
 
-Rel(GateWay, Automatic, "Управление автоматизацией")
-Rel(Automatic, AutomaticDb, "Запись/чтение данных")
-Rel(Automatic, DeviceRepository, "Получение списка устройств управления")
-Rel(Automatic, DeviceControl, "Управление и получение данных")
+Rel(GateWay, ManageController, "Управление расписанием")
+Rel(GateWay, DeviceController, "Управление устройствами")
+Rel(ManageController, ServiceLayer, "Управление расписанием")
+Rel(ServiceLayer, RepositoryLayer, "Запись/чтение данных")
+Rel(Scheduler, ServiceLayer, "Получение списка текущих задач")
+Rel(RepositoryLayer, AutomaticDb, "Запись/чтение данных")
+Rel(Scheduler, CommandBuilder, "Инициализация команды устройству")
+Rel(DeviceController, CommandBuilder, "Инициализация команды устройству")
+Rel(CommandBuilder, Producer, "Подготовка команды устройству")
+Rel(Producer, DeviceControl, "Отправление комманд RabbitMq")
 @enduml

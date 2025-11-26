@@ -10,7 +10,6 @@ Container_Boundary(SmartHouse, "Система Умный дом") {
   Container(GateWay, "API шлюз", "Go", "Маршрутизация запросов")
   Container(DeviceRepository, "Реестр устройств", "Go", "Управление устройствами, их расположении и доступности для пользователя")
   ContainerDb(DeviceRepositoryDb, "Database устройства", "PostgreSQL", "Хранение информации об устройствах, их расположении")
-  Container(Automatic, "Модуль управления и автоматизацией", "Go", "Управление устройствами по сценариям и графикам")
   Container(DeviceControl, "Взаимодействие устройствами", "Go", "Взаимодействие с устройствами")   
 }
 
@@ -21,7 +20,6 @@ Container(DeviceRepository, "Реестр устройств", "Go") {
 }
 
 Rel(GateWay, DeviceController, "Получение доступных устройств, регистрация новых")
-Rel(Automatic, DeviceController, "Получение списка устройств управления")
 Rel(DeviceControl, DeviceController, "Получение списка устройств")
 Rel(DeviceController, ServiceLayer, "Получение списка устройств")
 Rel(ServiceLayer, RepositoryLayer, "Получение списка устройств")
