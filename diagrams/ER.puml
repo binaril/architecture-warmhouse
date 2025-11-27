@@ -1,0 +1,174 @@
+﻿@startuml
+package "Пользователи" {
+  entity "User" as User {
+    *Id : UUID <<PK>>
+    --
+    RoleId : UUID <<FK>>
+    UserName : VARCHAR
+    Fio : VARCHAR
+    Email : VARCHAR
+    Phone : VARCHAR
+    PasswordHash : VARCHAR
+  }
+
+  entity "Role" as Role {
+    *Id : UUID <<PK>>
+    --
+    Name : VARCHAR
+  }
+}
+
+package "Автоматизация" {
+  entity "Schedule"" as Schedule {
+    *Id : UUID <<PK>>
+    --
+    UserId : UUID <<FK>>
+    Enabled : BOOLEAN
+    StartTime : TIMESTAMP
+    RetryDaysOfWeek : VARCHAR
+  }
+    
+  entity "ScheduleAction" as ScheduleAction {
+    *Id : UUID <<PK>>
+    --
+    ScheduleId : UUID <<FK>>
+    DeviceParameterId : UUID <<FK>>
+    SetValue : DECIMAL
+  }
+}
+
+package "Реестр устройств" {
+  entity "House" as House {
+    *Id : UUID <<PK>>
+    --
+    UserId : UUID <<FK>>
+    Address : VARCHAR
+  }
+
+  entity "Device" as Device {
+    *Id : UUID <<PK>>
+    --
+    TypeId : UUID <<FK>>
+    HouseId : UUID <<FK>>
+    ConnectionConfig : VARCHAR
+    SerialNumber : VARCHAR
+    FirmwareVersion : VARCHAR
+    Description : VARCHAR
+  }
+
+  entity "DeviceType" as DeviceType {
+    *Id : UUID <<PK>>
+    --
+    Name : VARCHAR
+    Description : VARCHAR
+  }
+
+  entity "DeviceParameter" as DeviceParameter {
+    *Id : UUID <<PK>>
+    --
+    DeviceId : UUID <<FK>>
+    ParameterTypeId : UUID <<FK>>
+    Name : VARCHAR
+    Description : VARCHAR
+  }
+  
+  entity "ParameterType" as ParameterType {
+    *Id : UUID <<PK>>
+    --
+    Name : VARCHAR
+    Modifiable : BOOLEAN
+    UnitOfMeasurement : VARCHAR
+  }  
+}
+
+
+
+package "Оповещения" {
+  entity "Trigger" as Trigger {
+    *Id : UUID <<PK>>
+    --
+    UserId : UUID <<FK>>
+    DeviceParameterId : UUID <<FK>>
+    MessageTypeId : UUID <<FK>>
+    Threshold : DECIMAL
+    Exceeding : BOOLEAN
+    SubjectTemplate : VARCHAR
+    MessageTemplate : VARCHAR
+  }
+
+  entity "Message" as Message {
+    *id : UUID <<PK>>
+    --
+    TriggerId : UUID <<FK>>
+    MessageTypeId : UUID <<FK>>
+    Time : TIMESTAMP
+    Receiver : VARCHAR
+    SubjectText : VARCHAR
+    MessageText : VARCHAR
+  }
+  
+  entity "MessageType" as MessageType {
+    *id : UUID <<PK>>
+    --
+    Name : VARCHAR
+  }  
+}
+
+
+package "Телеметрия" {
+  entity "TelemetryCurrentValue" as TelemetryCurrent {
+    DeviceParameterId : UUID <<PK>>,<<FK>>
+    --
+    UpdatedTime: TIMESTAMP
+    IsWorking : BOOLEAN
+    State : VARCHAR
+    Value : DECIMAL
+  }
+
+  entity "TelemetryTimeValue" as TelemetryTimeValue {
+    *Id : UUID <<PK>>
+    --
+    DeviceParameterId : UUID <<FK>>
+    Time: TIMESTAMP
+    Value : DECIMAL
+  }
+  
+  entity "Report" as Report {
+    *Id : UUID <<PK>>
+    --
+    UserId : UUID <<PK>>
+    Name : VARCHAR
+    Description : VARCHAR
+  }
+  
+  entity "ReportColumn" as ReportColumn {
+    *Id : UUID <<PK>>
+    --
+    ReportId : UUID <<FK>>
+    DeviceParameterId : UUID <<FK>>
+    Name : VARCHAR
+  }  
+    
+}
+
+
+
+Role ||--o{ User : "Роль определена"
+User ||--o{ House : "Пользователь владеет"
+User ||--o{ Report : "Пользователь создает"
+User ||--o{ Schedule : "Пользователь создает"
+User ||--o{ Trigger : "Пользователь создает"
+House ||--o{ Device : "Дом содержит"
+DeviceType ||--o{ Device : "Тип устройства определен"
+Device ||--o{ DeviceParameter : "В Устройстве отслеживаются различные параметры"
+ParameterType ||--o{ DeviceParameter : "Тип параметра определен"
+DeviceParameter ||--o{ TelemetryTimeValue : "Параметры формируют временные ряды"
+DeviceParameter ||--o| TelemetryCurrent : "Параметры имеют текущее значение"
+Report ||--o{ ReportColumn : "Отчет содержит"
+DeviceParameter ||--o{ ReportColumn : "Определяет столбец"
+Schedule ||--o{ ScheduleAction : "Расписание содержит"
+DeviceParameter ||--o{ ScheduleAction : "Задает значение"
+MessageType ||--o{ Trigger : "Тип сообщения определен"
+MessageType ||--o{ Message : "Тип сообщения определен"
+Trigger ||--o{ Message : "Тип сообщения определен"
+@enduml
