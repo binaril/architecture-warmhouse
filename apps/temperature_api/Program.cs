@@ -16,21 +16,43 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/temperature/{id}", (string id) =>
+app.MapGet("/temperature/{id}", (string? id, string? location) =>
     {
+        if (string.IsNullOrEmpty(id))
+        {
+	        id = location switch
+	        {
+		        "Living Room" => "1",
+		        "Bedroom" => "2",
+		        "Kitchen" => "3",
+		        _ => "0"
+	        };
+        }
+        
+        if (string.IsNullOrEmpty(location))
+        {
+	        location = id switch
+	        {
+		        "1" => "Living Room",
+		        "2" => "Bedroom",
+		        "3" => "Kitchen",
+		        _ => "Unknown"
+	        };
+        }
+        
         return new
         {
             Value = new Random().Next(10, 30),
             Unit = "C",
             Timestamp = DateTime.UtcNow,
-            Location = "Room",
+            Location = location,
             Status = "OK",
-            SensorID = Guid.NewGuid().ToString(),
+            SensorID = id,
             SensorType = "Temperature",
             Description = $"Temperature: {id}"
         };
     })
-    .WithName("GetWeatherForecast")
+    .WithName("Temperature")
     .WithOpenApi();
 
 app.Run();
