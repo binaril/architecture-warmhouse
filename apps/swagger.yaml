@@ -1,0 +1,238 @@
+﻿openapi: 3.0.0
+info:
+  title: Smart Home API
+  version: 1.0.0
+servers:
+  - url: https://api.smarthome.com
+
+paths:
+  /notifications:
+    get:
+      summary: Получить доступные оповещения для отображения на портале
+      responses:
+        '200':
+          description: Список оповещений
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                $ref: '#/components/schemas/Trigger'
+              examples:
+                example-1:
+                  value:
+                    [
+                      {
+                        "Id": "51d80811-3fdb-40c7-bb99-6895192446b0",
+                        "UserId": "15acb0cc-4e79-47ac-8e36-4e00c694ca54",
+                        "DeviceParameterId": "2937d081-3543-44bb-b967-cbf9cd36a8c8",
+                        "MessageTypeId": 1,
+                        "Threshold": "17.5",
+                        "Exceeding": false,
+                        "SubjectTemplate": "Warning! Very cold",
+                        "MessageTemplate": "The temperature is below {Threshold} degrees"
+                      }
+                    ]
+        '500':
+          description: Ошибка сервера
+    put:
+      summary: Обновить оповещение
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trigger'
+            examples:
+              example-1:
+                value:
+                  Id: "4faa1791-72c8-43a0-bfc2-662dbaa81dc2"
+                  UserId: "0338aaf5-a13f-4158-8c2e-68efe05bfae1"
+                  DeviceParameterId: "0a9cb52f-7aec-468b-a53e-8cce160c5cac"
+                  MessageTypeId: 1
+                  Threshold: "17.5"
+                  Exceeding: false
+                  SubjectTemplate: "Warning! Very cold"
+                  MessageTemplate: "The temperature is below {Threshold} degrees"
+      responses:
+        '200':
+          description: Оповещение обновлено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trigger'
+        '400':
+          description: Неверный запрос
+        '404':
+          description: Оповещение не найдено
+        '500':
+          description: Ошибка сервера
+    post:
+      summary: Создать новое уведомление
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerCreate'
+            examples:
+              example-1:
+                value:
+                  UserId: "e3087390-bc26-46e0-b98a-8717ad38d67f"
+                  DeviceParameterId: "31b90cb2-76c2-4403-a2cc-f1e7d948a8d7"
+                  MessageTypeId: 1
+                  Threshold: "15.5"
+                  Exceeding: false
+                  SubjectTemplate: "Warning! Very cold"
+                  MessageTemplate: "The temperature is below {Threshold} degrees"
+      responses:
+        '201':
+          description: Оповещение создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trigger'
+        '400':
+          description: Неверный запрос
+        '500':
+          description: Ошибка сервера
+  
+  
+  /notifications/{id}:
+    get:
+      summary: Получить данные оповещения для отображения и редактирования
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Данные оповещения
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trigger'
+              examples:
+                example-1:
+                  value:
+                    Id: "57ca7b49-be98-4ac9-9a47-03d3f071662c"
+                    UserId: "4926d4ba-f74a-4f5d-a05f-8238b4c5f60a"
+                    DeviceParameterId: "be89debd-e86a-45dd-affb-b83c73326de4"
+                    MessageTypeId: 1
+                    Threshold: "15.5"
+                    Exceeding: false
+                    SubjectTemplate: "Warning! Very cold"
+                    MessageTemplate: "The temperature is below {Threshold} degrees"
+        '404':
+          description: Оповещение не найдено
+        '500':
+          description: Ошибка сервера
+
+
+  /telemetry/latest/{DeviceParameterId}:
+    get:
+      summary: Получить текущее значение измеряемого параметра устройства
+      parameters:
+        - in: path
+          name: DeviceParameterId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Последняя запись телеметрии
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelemetryCurrentValue'
+        '404':
+          description: Данные не найдены
+        '500':
+          description: Ошибка сервера
+
+
+
+components:
+  schemas:
+    Trigger:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        UserId:
+          type: string
+          format: uuid
+        DeviceParameterId:
+          type: string
+          format: uuid
+        MessageTypeId:
+          type: integer
+        Threshold:
+          type: number
+          format: decimal
+        Exceeding:
+          type: boolean
+        SubjectTemplate:
+          type: string
+        MessageTemplate:
+          type: string
+        Enabled:
+          type: boolean
+      required:
+        - Id
+        - UserId
+        - DeviceParameterId
+        - Threshold
+        - Exceeding
+    
+    TriggerCreate:
+      type: object
+      properties:
+        UserId:
+          type: string
+          format: uuid
+        DeviceParameterId:
+          type: string
+          format: uuid
+        Threshold:
+          type: number
+          format: decimal
+        Exceeding:
+          type: boolean
+        SubjectTemplate:
+          type: string
+        MessageTemplate:
+          type: string
+        Enabled:
+          type: boolean
+      required:
+        - UserId
+        - DeviceParameterId
+        - Threshold
+        - Exceeding
+    
+    TelemetryCurrentValue:
+      type: object
+      properties:
+        DeviceParameterId:
+          type: string
+          format: uuid
+        UpdatedTime:
+          type: string
+          format: date-time
+        IsWorking:
+          type: boolean
+        State:
+          type: string
+        Value:
+          type: number
+          format: float
+
+
+
+

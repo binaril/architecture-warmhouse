@@ -3,7 +3,7 @@ package "Пользователи" {
   entity "User" as User {
     *Id : UUID <<PK>>
     --
-    RoleId : UUID <<FK>>
+    RoleId : INTEGER <<FK>>
     UserName : VARCHAR
     Fio : VARCHAR
     Email : VARCHAR
@@ -12,7 +12,7 @@ package "Пользователи" {
   }
 
   entity "Role" as Role {
-    *Id : UUID <<PK>>
+    *Id : INTEGER <<PK>>
     --
     Name : VARCHAR
   }
@@ -48,7 +48,7 @@ package "Реестр устройств" {
   entity "Device" as Device {
     *Id : UUID <<PK>>
     --
-    TypeId : UUID <<FK>>
+    TypeId : INTEGER <<FK>>
     HouseId : UUID <<FK>>
     ConnectionConfig : VARCHAR
     SerialNumber : VARCHAR
@@ -57,7 +57,7 @@ package "Реестр устройств" {
   }
 
   entity "DeviceType" as DeviceType {
-    *Id : UUID <<PK>>
+    *Id : INTEGER <<PK>>
     --
     Name : VARCHAR
     Description : VARCHAR
@@ -67,13 +67,13 @@ package "Реестр устройств" {
     *Id : UUID <<PK>>
     --
     DeviceId : UUID <<FK>>
-    ParameterTypeId : UUID <<FK>>
+    ParameterTypeId : INTEGER <<FK>>
     Name : VARCHAR
     Description : VARCHAR
   }
   
   entity "ParameterType" as ParameterType {
-    *Id : UUID <<PK>>
+    *Id : INTEGER <<PK>>
     --
     Name : VARCHAR
     Modifiable : BOOLEAN
@@ -89,18 +89,19 @@ package "Оповещения" {
     --
     UserId : UUID <<FK>>
     DeviceParameterId : UUID <<FK>>
-    MessageTypeId : UUID <<FK>>
+    MessageTypeId : INTEGER <<FK>>
     Threshold : DECIMAL
     Exceeding : BOOLEAN
     SubjectTemplate : VARCHAR
     MessageTemplate : VARCHAR
+    Enabled : BOOLEAN
   }
 
   entity "Message" as Message {
     *id : UUID <<PK>>
     --
     TriggerId : UUID <<FK>>
-    MessageTypeId : UUID <<FK>>
+    MessageTypeId : INTEGER <<FK>>
     Time : TIMESTAMP
     Receiver : VARCHAR
     SubjectText : VARCHAR
@@ -108,7 +109,7 @@ package "Оповещения" {
   }
   
   entity "MessageType" as MessageType {
-    *id : UUID <<PK>>
+    *id : INTEGER <<PK>>
     --
     Name : VARCHAR
   }  

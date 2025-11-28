@@ -27,7 +27,7 @@ Container_Boundary(SmartHouse, "FitLife System") {
 }
 
 System_Ext(SmartDevice, "Устройства", "Умные устройства, датчики и регуляторы отопления (экосистема партнеров)")
-System_Ext(Messengers, "Мессендеры", "Доставка событий")
+System_Ext(Messengers, "Мессенджеры", "Доставка событий")
 
 Rel(user, WebApp, "Управляет устройствами своего дома")
 Rel(admin, WebAppAdmin,"Управляет пользователями и доступом к датчикам")
