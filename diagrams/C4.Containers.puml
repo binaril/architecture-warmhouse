@@ -41,7 +41,7 @@ Rel(GateWay, DeviceRepository, "Получение доступных устро
 Rel(UserAccess, UserAccessDb, "Запись/чтение данных")
 Rel(Telemetry,TelemetryDatabase,"Запись/чтение данных")
 Rel(Automatic, AutomaticDb, "Запись/чтение данных")
-Rel(Automatic, DeviceControl, "Отправление комманд RabbitMq")
+Rel(Automatic, DeviceControl, "Отправление комманд")
 Rel(Notification, Telemetry, "Определение формирования событий")
 Rel(Notification, Messengers, "Доставка событий")
 Rel(Notification, UserAccess, "Получение контактов для отправления событий")

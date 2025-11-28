@@ -51,43 +51,33 @@
 
 ### 5. Визуализация контекста системы — диаграмма С4
 
-```markdown
-[Текст ссылки](URL)
-```
-
-Замените `Текст ссылки` текстом, который хотите использовать для ссылки. Вместо `URL` вставьте адрес, на который должна вести ссылка. Например:
-
-```markdown
-[Посетите Яндекс](https://ya.ru/)
-```
+[Context](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Context.png)
 
 # Задание 2. Проектирование микросервисной архитектуры
 
-В этом задании вам нужно предоставить только диаграммы в модели C4. Мы не просим вас отдельно описывать получившиеся микросервисы и то, как вы определили взаимодействия между компонентами To-Be системы. Если вы правильно подготовите диаграммы C4, они и так это покажут.
-
 **Диаграмма контейнеров (Containers)**
 
-Добавьте диаграмму.
+[Containers](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Containers.png)
 
 **Диаграмма компонентов (Components)**
 
-[Automatic](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.Automatic.png)
+[Component.Automatic](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.Automatic.png)
 
-[DeviceControl](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.DeviceControl.png)
+[Component.DeviceControl](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.DeviceControl.png)
 
-[DeviceRepository](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.DeviceRepository.png)
+[Component.DeviceRepository](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.DeviceRepository.png)
 
-[GateWay](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.GateWay.png)
+[Component.GateWay](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.GateWay.png)
 
-[Notification](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.Notification.png)
+[Component.Notification](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.Notification.png)
 
-[Telemetry](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.Telemetry.png)
+[Component.Telemetry](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.Telemetry.png)
 
-[UserAccess](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.UserAccess.png)
+[Component.UserAccess](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.UserAccess.png)
 
-[WebApp](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.WebApp.png)
+[Component.WebApp](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.WebApp.png)
 
-[WebAppAdmin](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.WebAppAdmin.png)
+[Component.WebAppAdmin](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.WebAppAdmin.png)
 
 **Диаграмма кода (Code)**
 
@@ -95,17 +85,17 @@
 
 # Задание 3. Разработка ER-диаграммы
 
-Добавьте сюда ER-диаграмму. Она должна отражать ключевые сущности системы, их атрибуты и тип связей между ними.
+[ER](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/ER.png)
 
 # Задание 4. Создание и документирование API
 
 ### 1. Тип API
 
-Для взаимодействия большинства компонентов будет использоваться REST API. Так как большая часть взаимодействия подрузомевает немедленное получение ответа (получить список устройств, получить список параметров и т.д.
+Для взаимодействия компонентов будет использоваться REST API. Так как большая часть взаимодействия подразумевает немедленное получение ответа (получить список устройств, получить список параметров и т.д.) то удобнее использовать синхронное взаимодействие
 
 ### 2. Документация API
 
-Здесь приложите ссылки на документацию API для микросервисов, которые вы спроектировали в первой части проектной работы. Для документирования используйте Swagger/OpenAPI или AsyncAPI.
+[Swagger](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/apps/swagger.yaml)
 
 # Задание 5. Работа с docker и docker-compose
 

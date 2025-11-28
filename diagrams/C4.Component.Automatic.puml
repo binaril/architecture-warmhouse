@@ -32,5 +32,5 @@ Rel(RepositoryLayer, AutomaticDb, "Запись/чтение данных")
 Rel(Scheduler, CommandBuilder, "Инициализация команды устройству")
 Rel(DeviceController, CommandBuilder, "Инициализация команды устройству")
 Rel(CommandBuilder, Producer, "Подготовка команды устройству")
-Rel(Producer, DeviceControl, "Отправление комманд RabbitMq")
+Rel(Producer, DeviceControl, "Отправление комманд")
 @enduml
