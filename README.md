@@ -51,10 +51,6 @@
 
 ### 5. Визуализация контекста системы — диаграмма С4
 
-Добавьте сюда диаграмму контекста в модели C4.
-
-Чтобы добавить ссылку в файл Readme.md, нужно использовать синтаксис Markdown. Это делают так:
-
 ```markdown
 [Текст ссылки](URL)
 ```
@@ -75,7 +71,23 @@
 
 **Диаграмма компонентов (Components)**
 
-Добавьте диаграмму для каждого из выделенных микросервисов.
+[Automatic](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.Automatic.png)
+
+[DeviceControl](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.DeviceControl.png)
+
+[DeviceRepository](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.DeviceRepository.png)
+
+[GateWay](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.GateWay.png)
+
+[Notification](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.Notification.png)
+
+[Telemetry](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.Telemetry.png)
+
+[UserAccess](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.UserAccess.png)
+
+[WebApp](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.WebApp.png)
+
+[WebAppAdmin](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.WebAppAdmin.png)
 
 **Диаграмма кода (Code)**
 
