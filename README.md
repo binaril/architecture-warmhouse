@@ -81,7 +81,11 @@
 
 **Диаграмма кода (Code)**
 
-Добавьте одну диаграмму или несколько.
+[Code.AutomaticEdit1.Sequence](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/Code.AutomaticEdit1.Sequence.png)
+
+[Code.AutomaticEdit2.Sequence](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/Code.AutomaticEdit2.Sequence.png)
+
+[Code.AutomaticScheduler.Sequence](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/Code.AutomaticScheduler.Sequence.png)
 
 # Задание 3. Разработка ER-диаграммы
 
