@@ -1,0 +1,22 @@
+﻿@startuml
+title Теплый дом. Диаграмма контекста AsIs 
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "Пользователь", "Пользователь системы умный дом")
+Person(admin, "Администратор", "Администратор системы умный дом")
+System(SmartHouse, "система Умный дом", "Система управления отоплением домов")
+
+System_Ext(TemperatureDevice, "Датчики температуры", "")
+System_Ext(SmartDevice, "Регуляторы отопления", "")
+System_Ext(PaidService, "Сервис оплаты", "")
+
+Rel(user, SmartHouse, "Управляет устройствами своего дома")
+Rel(admin,SmartHouse, "Управляет пользователями и доступом к датчикам")
+Rel(SmartHouse,TemperatureDevice,"Определение состояния")
+Rel(SmartHouse,SmartDevice,"Определение состояние и управление")
+Rel(SmartHouse,PaidService,"Оплата")
+
+@enduml

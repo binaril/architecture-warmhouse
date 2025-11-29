@@ -1,0 +1,25 @@
+@startuml
+title Теплый дом. Модуль телеметриWeb приложение администратора. Диаграмма компонентов
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(admin, "Администратор", "Администратор системы умный дом")
+
+Container_Boundary(SmartHouse, "Система Умный дом") {
+  Container(WebAppAdmin, "Web приложение администратора", "react", "Панель администратора")
+  Container(GateWay, "API шлюз", "Go", "Маршрутизация запросов")
+}
+
+Container(WebAppAdmin, "Web приложение", "Go") {
+  Component(LoginModule, "Модуль аутентификации", "Страница входа в систему")
+  Component(UserManage, "Модуль управление пользователями", "Позволяет управлять пользователями и их доступом")
+}
+
+Rel(admin, LoginModule,"Управляет пользователями и доступом к датчикам")
+Rel(admin, UserManage,"Управляет пользователями и доступом к датчикам")
+Rel(LoginModule, GateWay, "Обработка запросов")
+Rel(UserManage, GateWay, "Обработка запросов")
+
+@enduml

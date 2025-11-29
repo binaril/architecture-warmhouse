@@ -1,0 +1,29 @@
+﻿@startuml
+participant "API управление расписанием" as APIcontroller
+participant "Бизнес логика" as BusinessLogic
+participant    "Репозиторий"    as Repository
+database    "База данных"    as Database
+
+title Получение расписания
+
+APIcontroller -> BusinessLogic : Запрос расписания по id
+BusinessLogic -> Repository : Запрос расписания по id
+Repository -> Database : Отправка запроса (SQL)
+Repository <- Database : Чтение данных расписания
+BusinessLogic <- Repository : Получение данных расписания
+APIcontroller <- BusinessLogic : Получение модели\nданных расписания
+
+newpage Изменение расписания
+
+APIcontroller -> BusinessLogic : Передача измененной\nмодели расписания
+BusinessLogic -> Repository : Передача обработанной\nмодели расписания
+Repository -> Database : Отправка запроса,\nзапись данных (SQL)
+Repository <- Database : Чтение данных
+BusinessLogic <- Repository : Получение данных расписания
+APIcontroller <- BusinessLogic : Получение модели\nданных расписания
+
+
+
+
+
+@enduml

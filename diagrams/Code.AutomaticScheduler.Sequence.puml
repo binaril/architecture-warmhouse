@@ -1,0 +1,24 @@
+﻿@startuml
+participant "Планировщик" as Scheduler
+participant "Бизнес логика" as BusinessLogic
+participant    "Репозиторий"    as Repository
+database    "База данных"    as Database
+participant "Обработчик команд" as CommandHandler
+participant    "Отправитель команд"    as Producer
+
+
+title Изменение расписания
+Scheduler -> BusinessLogic : Запрос на получение расписание
+BusinessLogic -> Repository : Запрос на получение расписание
+Repository -> Database : Отправка запроса (SQL)
+Repository <- Database : Чтение данных расписания
+BusinessLogic <- Repository : Получение данных расписания
+Scheduler <- BusinessLogic : Получение модели\nданных расписания
+
+Scheduler <- Scheduler : Ожидание\nзапланированного\nвремени
+
+Scheduler -> CommandHandler : Подготовка команды
+CommandHandler -> Producer : Отправление команды
+CommandHandler <- Producer : Получение результата выполнения
+Scheduler <- CommandHandler : Получение результата выполнения, сохранение в логах
+@enduml

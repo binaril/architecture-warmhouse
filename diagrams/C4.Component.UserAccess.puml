@@ -1,0 +1,27 @@
+@startuml
+title Теплый дом. Управление пользователями. Диаграмма компонентов
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+
+Container_Boundary(SmartHouse, "Система Умный дом") {
+  Container(UserAccess, "Управление пользователями", "Go", "Управление данных пользователей")
+  Container(GateWay, "API шлюз", "Go", "Маршрутизация запросов")
+  ContainerDb(UserAccessDb, "Database Пользователи", "PostgreSQL", "Хранение данных пользователей")
+  Container(Notification, "Модуль оповещений", "Go", "Формирование сообщений по определенным событиям")
+}
+
+Container(UserAccess, "Управление пользователями", "Go") {
+  Component(AccessController, "API", "Обработка запросов")
+  Component(ServiceLayer, "Слой бизнес логики", "Обработка запросов")
+  Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
+}
+
+Rel(GateWay, AccessController, "Авторизация, управление")
+Rel(AccessController, ServiceLayer, "Получение списка устройств")
+Rel(ServiceLayer, RepositoryLayer, "Получение списка устройств")
+Rel(RepositoryLayer, UserAccessDb, "Запись/чтение данных")
+Rel(Notification, AccessController, "Получение контактов для отправления событий")
+@enduml

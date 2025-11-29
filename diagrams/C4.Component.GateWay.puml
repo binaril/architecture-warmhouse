@@ -1,0 +1,43 @@
+@startuml
+title Теплый дом. API шлюз. Диаграмма компонентов
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+
+Container_Boundary(SmartHouse, "Система Умный дом") {
+  Container(WebApp, "Web приложение", "react", "Панель управления устройствами")
+  Container(WebAppAdmin, "Web приложение администратора", "react", "Панель администратора")
+  Container(GateWay, "API шлюз", "Go", "Маршрутизация запросов")
+  Container(UserAccess, "Управление пользователями", "Go", "Управление данных пользователей")
+  Container(Notification, "Модуль оповещений", "Go", "Формирование сообщений по определенным событиям")
+  Container(DeviceRepository, "Реестр устройств", "Go", "Управление устройствами, их расположении и доступности для пользователя")
+  Container(Automatic, "Модуль управления и автоматизацией", "Go", "Управление устройствами по сценариям и графикам")
+  Container(Telemetry, "Модуль телеметрии", "Go", "Обработка и хранение телеметрии датчиков и устройств")
+}
+
+Container(GateWay, "API шлюз", "Go") {
+  Component(AuthenticationModule, "Модуль аутентификации", "Определение пользователя и доступа")
+  Component(TelemetryController, "Controller Телеметрия", "Проверка доступа, формирование запросов в микросервис")
+  Component(AutomaticController, "Controller Управление автоматизацией", "Проверка доступа, формирование запросов в микросервис")
+  Component(NotificationController, "Controller Оповещения", "Проверка доступа, формирование запросов в микросервис")
+  Component(DeviceRepositoryController, "Controller Реестр устройств", "Проверка доступа, формирование запросов в микросервис")
+  Component(UserAccessController, "Controller Администрирование", "Управление пользователями и доступом")
+}
+
+Rel(WebApp, AuthenticationModule, "Аутентификация, получение beaver токена")
+
+Rel(WebApp, TelemetryController, "Обработка запросов")
+Rel(WebApp, AutomaticController, "Обработка запросов")
+Rel(WebApp, NotificationController, "Обработка запросов")
+Rel(WebApp, DeviceRepositoryController, "Обработка запросов")
+Rel(WebAppAdmin, AuthenticationModule, "Аутентификация, получение beaver токена")
+Rel(WebAppAdmin, UserAccessController, "Обработка запросов")
+Rel(AuthenticationModule, UserAccess, "Аутентификация")
+Rel(UserAccessController, UserAccess, "Администрирование")
+Rel(TelemetryController, Telemetry, "Получение отчетов и данных в реальном времени")
+Rel(AutomaticController, Automatic, "Управление автоматизацией")
+Rel(NotificationController, Notification, "Управление оповещениями")
+Rel(DeviceRepositoryController, DeviceRepository, "Получение доступных устройств, регистрация новых")
+@enduml

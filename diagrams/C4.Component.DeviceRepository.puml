@@ -1,0 +1,27 @@
+@startuml
+title Теплый дом. Реестр устройств. Диаграмма компонентов
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+
+Container_Boundary(SmartHouse, "Система Умный дом") {
+  Container(GateWay, "API шлюз", "Go", "Маршрутизация запросов")
+  Container(DeviceRepository, "Реестр устройств", "Go", "Управление устройствами, их расположении и доступности для пользователя")
+  ContainerDb(DeviceRepositoryDb, "Database устройства", "PostgreSQL", "Хранение информации об устройствах, их расположении")
+  Container(DeviceControl, "Взаимодействие устройствами", "Go", "Взаимодействие с устройствами")   
+}
+
+Container(DeviceRepository, "Реестр устройств", "Go") {
+  Component(DeviceController, "API", "Обработка запросов")
+  Component(ServiceLayer, "Слой бизнес логики", "Обработка запросов")
+  Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
+}
+
+Rel(GateWay, DeviceController, "Получение доступных устройств, регистрация новых")
+Rel(DeviceControl, DeviceController, "Получение списка устройств")
+Rel(DeviceController, ServiceLayer, "Получение списка устройств")
+Rel(ServiceLayer, RepositoryLayer, "Получение списка устройств")
+Rel(RepositoryLayer, DeviceRepositoryDb, "Запись/чтение данных")
+@enduml

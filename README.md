@@ -1,90 +1,105 @@
 # Project_template
 
-Это шаблон для решения проектной работы. Структура этого файла повторяет структуру заданий. Заполняйте его по мере работы над решением.
-
 # Задание 1. Анализ и планирование
-
-<aside>
-
-Чтобы составить документ с описанием текущей архитектуры приложения, можно часть информации взять из описания компании и условия задания. Это нормально.
-
-</aside
 
 ### 1. Описание функциональности монолитного приложения
 
 **Управление отоплением:**
 
-- Пользователи могут…
-- Система поддерживает…
-- …
+- Пользователи могут удалённо включать/выключать отопление в своих домах
+- Система поддерживает управление системами отопления, установленных в домах
 
 **Мониторинг температуры:**
 
-- Пользователи могут…
-- Система поддерживает…
-- …
+- Пользователи могут просматривать текущую температуру в своих домах через веб-интерфейс
+- Система поддерживает сбор данных с датчиков температур, установленных в домах
 
 ### 2. Анализ архитектуры монолитного приложения
 
-Перечислите здесь основные особенности текущего приложения: какой язык программирования используется, какая база данных, как организовано взаимодействие между компонентами и так далее.
+- Язык программирования: Go
+- База данных: PostgreSQL
+- Архитектура: Монолитная, все компоненты системы (обработка запросов, бизнес-логика, работа с данными) находятся в рамках одного приложения.
+- Взаимодействие: Синхронное, запросы обрабатываются последовательно.
+- Масштабируемость: Ограничена, так как монолит сложно масштабировать по частям.
+- Развертывание: Требует остановки всего приложения.
 
 ### 3. Определение доменов и границы контекстов
 
-Опишите здесь домены, которые вы выделили.
+1. Домен «Отопление» 
+    - получение и хранение данных с датчиков температур
+    - управление регуляторами отопления, сохранение состояний
+    - получение данных о работоспособности регуляторов
+2. Домен "Умные устройства"
+    - получение и хранение статусов устройств
+    - удаленное управление устройствами (вкл/выкл)
+    - получение данных о работоспособности устройств
+3. Домен "Интеграция"
+    - подключение новых домов и их умных устройств и модулей управления отоплением
+4. Домен "Удаленное управление"
+    - веб интерфейс для управления модулями отопления и умными устройствами
+    - определение доступа к датчикам и устройствам
+    - администрирование пользователей
 
 ### **4. Проблемы монолитного решения**
 
-- …
-- …
-- …
+- Сложность разработки, высокий риск нарушить работу других компонентов приложения
+- Длительность тестирования, требуется протестировать все приложение после каждого изменения
+- Ограниченная масштабируемость (монолит придется масштабировать целиком, а не отдельные его компоненты)
+- Для обновления любого компонента требуется перезапускать всего приложение
+- Трудно работать над проектом большой командой
 
-Если вы считаете, что текущее решение не вызывает проблем, аргументируйте свою позицию.
 
 ### 5. Визуализация контекста системы — диаграмма С4
 
-Добавьте сюда диаграмму контекста в модели C4.
-
-Чтобы добавить ссылку в файл Readme.md, нужно использовать синтаксис Markdown. Это делают так:
-
-```markdown
-[Текст ссылки](URL)
-```
-
-Замените `Текст ссылки` текстом, который хотите использовать для ссылки. Вместо `URL` вставьте адрес, на который должна вести ссылка. Например:
-
-```markdown
-[Посетите Яндекс](https://ya.ru/)
-```
+[Context](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Context.png)
 
 # Задание 2. Проектирование микросервисной архитектуры
 
-В этом задании вам нужно предоставить только диаграммы в модели C4. Мы не просим вас отдельно описывать получившиеся микросервисы и то, как вы определили взаимодействия между компонентами To-Be системы. Если вы правильно подготовите диаграммы C4, они и так это покажут.
-
 **Диаграмма контейнеров (Containers)**
 
-Добавьте диаграмму.
+[Containers](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Containers.png)
 
 **Диаграмма компонентов (Components)**
 
-Добавьте диаграмму для каждого из выделенных микросервисов.
+[Component.Automatic](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.Automatic.png)
+
+[Component.DeviceControl](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.DeviceControl.png)
+
+[Component.DeviceRepository](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.DeviceRepository.png)
+
+[Component.GateWay](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.GateWay.png)
+
+[Component.Notification](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.Notification.png)
+
+[Component.Telemetry](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.Telemetry.png)
+
+[Component.UserAccess](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.UserAccess.png)
+
+[Component.WebApp](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.WebApp.png)
+
+[Component.WebAppAdmin](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/C4.Component.WebAppAdmin.png)
 
 **Диаграмма кода (Code)**
 
-Добавьте одну диаграмму или несколько.
+[Code.AutomaticEdit1.Sequence](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/Code.AutomaticEdit1.Sequence.png)
+
+[Code.AutomaticEdit2.Sequence](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/Code.AutomaticEdit2.Sequence.png)
+
+[Code.AutomaticScheduler.Sequence](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/Code.AutomaticScheduler.Sequence.png)
 
 # Задание 3. Разработка ER-диаграммы
 
-Добавьте сюда ER-диаграмму. Она должна отражать ключевые сущности системы, их атрибуты и тип связей между ними.
+[ER](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/diagrams/images/ER.png)
 
 # Задание 4. Создание и документирование API
 
 ### 1. Тип API
 
-Укажите, какой тип API вы будете использовать для взаимодействия микросервисов. Объясните своё решение.
+Для взаимодействия компонентов будет использоваться REST API. Так как большая часть взаимодействия подразумевает немедленное получение ответа (получить список устройств, получить список параметров и т.д.) то удобнее использовать синхронное взаимодействие
 
 ### 2. Документация API
 
-Здесь приложите ссылки на документацию API для микросервисов, которые вы спроектировали в первой части проектной работы. Для документирования используйте Swagger/OpenAPI или AsyncAPI.
+[Swagger](https://github.com/binaril/architecture-warmhouse/blob/warmhouse/apps/swagger.yaml)
 
 # Задание 5. Работа с docker и docker-compose
 

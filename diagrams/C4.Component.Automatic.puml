@@ -1,0 +1,36 @@
+@startuml
+title Теплый дом. Модуль управления и автоматизацией. Диаграмма компонентов
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+
+Container_Boundary(SmartHouse, "Система Умный дом") {
+  Container(GateWay, "API шлюз", "Go", "Маршрутизация запросов")
+  Container(Automatic, "Модуль управления и автоматизацией", "Go", "Управление устройствами по сценариям и графикам")
+  ContainerDb(AutomaticDb, "База данных автоматизации", "PostgreSQL", "Хранение сценариев и графиков управления устройствами")
+  Container(DeviceControl, "Взаимодействие устройствами", "Go", "Взаимодействие с устройствами")    
+}
+
+Container(Automatic, "Модуль управления и автоматизацией", "Go") {
+  Component(ManageController, "API управление расписанием", "Обработка запросов редактирования графиков и схем автоматизации")
+  Component(DeviceController, "API управление устройствами", "Обработка запросов управления устройствами")
+  Component(ServiceLayer, "Слой бизнес логики", "Обработка запросов")
+  Component(Scheduler, "Планировщик", "Выполняет команды по расписанию")
+  Component(Producer, "Producer команд", "Manages schedules")
+  Component(CommandBuilder, "Обработчик команд", "Формирует команды для устройств")
+  Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
+}
+
+Rel(GateWay, ManageController, "Управление расписанием")
+Rel(GateWay, DeviceController, "Управление устройствами")
+Rel(ManageController, ServiceLayer, "Управление расписанием")
+Rel(ServiceLayer, RepositoryLayer, "Запись/чтение данных")
+Rel(Scheduler, ServiceLayer, "Получение списка текущих задач")
+Rel(RepositoryLayer, AutomaticDb, "Запись/чтение данных")
+Rel(Scheduler, CommandBuilder, "Инициализация команды устройству")
+Rel(DeviceController, CommandBuilder, "Инициализация команды устройству")
+Rel(CommandBuilder, Producer, "Подготовка команды устройству")
+Rel(Producer, DeviceControl, "Отправление комманд")
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+title Теплый дом. Модуль телеметрии. Диаграмма компонентов
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+
+Container_Boundary(SmartHouse, "Система Умный дом") {
+  Container(GateWay, "API шлюз", "Go", "Маршрутизация запросов")
+  Container(DeviceControl, "Взаимодействие устройствами", "Go", "Взаимодействие с устройствами")
+  Container(Telemetry, "Модуль телеметрии", "Go", "Обработка и хранение телеметрии датчиков и устройств")
+  ContainerDb(TelemetryDatabase, "База данных телеметрии", "PostgreSQL", "Временные ряды состояний датчиков и устройств")
+  Container(Notification, "Модуль оповещений", "Go", "Формирование сообщений по определенным событиям")
+}
+
+Container(Telemetry, "Модуль телеметрии", "Go") {
+  Component(WriteController, "Controller Сохранение данных", "Принимает данные с устройств для последующей обработки")
+  Component(Validator, "Валидатор", "Проверка значений на корректность")
+  Component(Aggregator, "Агрегатор", "Усреднение значений по временным интервалам")
+  Component(ReadController, "Controller Предоставление данных", "Предоставляет текущие значения и данные за временные интервалы")
+  Component(ReportGenerator, "Генератор отчетов", "Подготавливает данные")
+  Component(RepositoryLayer, "Repository Layer", "Доступ к БД")
+}
+
+Rel(GateWay, ReadController, "Получение отчетов и данных в реальном времени")
+Rel(RepositoryLayer,TelemetryDatabase,"Запись/чтение данных")
+Rel(Notification, ReadController, "Получение значений для формирования событий")
+Rel(DeviceControl, WriteController, "Передача показания датчиков и телеметрии")
+Rel(WriteController, Validator, "Передача данных")
+Rel(Validator, Aggregator, "Обработка временных интервалов")
+Rel(Validator, RepositoryLayer, "Сохранение текущих значений")
+Rel(Aggregator, RepositoryLayer, "Сохранение значений усредненных по времени")
+Rel(ReadController, ReportGenerator, "Сохранение значений усредненных по времени")
+Rel(ReportGenerator, RepositoryLayer, "Сохранение значений усредненных по времени")
+
+@enduml
